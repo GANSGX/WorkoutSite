@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Личный кабинет</title>
+  <link rel="stylesheet" href="./styles/main.css">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Личный кабинет</h1>
+    <a href="exercises.html" class="nav-link">Популярные упражнения</a>
+    <div class="user-section">
+      <input id="userName" type="text" placeholder="Введите ваше имя">
+      <button onclick="saveName()">Сохранить имя</button>
+    </div>
+    <h2 id="greeting"></h2>
+
+    <div id="calendar"></div>
+
+    <h2>Добавить упражнение</h2>
+    <div class="exercise-form">
+      <div class="mode-switch">
+        <label><input type="radio" name="exerciseMode" value="select" checked onclick="toggleExerciseMode()"> Выбрать из списка</label>
+        <label><input type="radio" name="exerciseMode" value="manual" onclick="toggleExerciseMode()"> Ввести вручную</label>
+        <button class="plan-button" onclick="openPlanModal()">Составить план тренировок</button>
+        <button class="plan-button" onclick="openPlansListModal()">Сохранённые планы</button>
+      </div>
+
+      <select id="planSelect" onchange="loadPlanExercises()">
+        <option value="" selected>Выберите готовый план</option>
+      </select>
+
+      <div id="selectMode">
+        <select id="muscleGroup" onchange="updateTierList()">
+          <option value="" disabled selected>Выберите группу мышц</option>
+          <option value="Бицепс">Бицепс</option>
+          <option value="Трицепс">Трицепс</option>
+          <option value="Грудь">Грудь</option>
+          <option value="Спина">Спина</option>
+          <option value="Ноги">Ноги</option>
+          <option value="Плечи">Плечи</option>
+          <option value="Пресс">Пресс</option>
+        </select>
+        <select id="tier" onchange="updateExerciseList()">
+          <option value="" disabled selected>Выберите tier</option>
+          <option value="S">S-tier</option>
+          <option value="A">A-tier</option>
+          <option value="C">C-tier</option>
+        </select>
+      </div>
+
+      <div id="manualMode" style="display: none;">
+        <input id="exerciseNameManual" type="text" placeholder="Введите название упражнения">
+        <select id="muscleGroupManual">
+          <option value="" disabled selected>Выберите группу мышц</option>
+          <option value="Бицепс">Бицепс</option>
+          <option value="Трицепс">Трицепс</option>
+          <option value="Грудь">Грудь</option>
+          <option value="Спина">Спина</option>
+          <option value="Ноги">Ноги</option>
+          <option value="Плечи">Плечи</option>
+          <option value="Пресс">Пресс</option>
+        </select>
+      </div>
+
+      <input id="sets" type="number" min="1" placeholder="Подходы">
+      <input id="reps" type="number" min="1" placeholder="Повторения">
+      <input id="weight" type="number" min="0" placeholder="Вес (кг)">
+      <button onclick="addExercise()">Добавить</button>
+    </div>
+
+    <div id="workoutList"></div>
+
+    <!-- Секция для экспорта в Telegram -->
+    <div id="exportSection">
+      <h2>Экспорт тренировок в Telegram</h2>
+      <div class="export-mode-switch">
+        <label><input type="radio" name="exportMode" value="current" checked onclick="toggleExportMode()"> Текущий период</label>
+        <label><input type="radio" name="exportMode" value="custom" onclick="toggleExportMode()"> Свой интервал</label>
+      </div>
+      <div id="currentPeriodMode">
+        <select id="exportPeriod">
+          <option value="day">День</option>
+          <option value="week">Неделя</option>
+          <option value="month">Месяц</option>
+          <option value="halfyear">Полгода</option>
+          <option value="year">Год</option>
+        </select>
+      </div>
+      <div id="customPeriodMode" style="display: none;">
+        <input type="date" id="startDate" placeholder="Начало периода">
+        <input type="date" id="endDate" placeholder="Конец периода">
+      </div>
+      <button onclick="exportWorkoutsToTelegram()">Экспорт</button>
+    </div>
+
+    <!-- Секция для анализа прогресса -->
+    <div id="progressAnalysis">
+      <h2>Анализ прогресса</h2>
+      <select id="analysisMuscleGroup">
+        <option value="" disabled selected>Выберите группу мышц</option>
+        <option value="Бицепс">Бицепс</option>
+        <option value="Трицепс">Трицепс</option>
+        <option value="Грудь">Грудь</option>
+        <option value="Спина">Спина</option>
+        <option value="Ноги">Ноги</option>
+        <option value="Плечи">Плечи</option>
+        <option value="Пресс">Пресс</option>
+      </select>
+      <button onclick="analyzeProgress()">Анализировать</button>
+      <div id="progressResult"></div>
+    </div>
+  </div>
+
+  <!-- Модальное окно для создания/редактирования плана -->
+  <div id="planModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Составить план тренировок</h3>
+      <input id="planName" type="text" placeholder="Введите название плана">
+      <select id="planMuscleGroup">
+        <option value="" disabled selected>Выберите группу мышц (тег)</option>
+        <option value="Бицепс">Бицепс</option>
+        <option value="Трицепс">Трицепс</option>
+        <option value="Грудь">Грудь</option>
+        <option value="Спина">Спина</option>
+        <option value="Ноги">Ноги</option>
+        <option value="Плечи">Плечи</option>
+        <option value="Пресс">Пресс</option>
+      </select>
+      <div class="plan-mode-switch" style="margin-top: 10px;">
+        <label><input type="radio" name="planMode" value="select" checked onclick="togglePlanMode()"> Выбрать из списка</label>
+        <label><input type="radio" name="planMode" value="manual" onclick="togglePlanMode()"> Ввести вручную</label>
+      </div>
+      <div id="planSelectMode">
+        <div class="exercise-name-container">
+          <select id="planExerciseName" class="full-width">
+            <option value="" disabled selected>Упражнение</option>
+          </select>
+        </div>
+        <select id="planTier" onchange="updatePlanExerciseList()">
+          <option value="" disabled selected>Tier</option>
+          <option value="S">S-tier</option>
+          <option value="A">A-tier</option>
+          <option value="C">C-tier</option>
+        </select>
+        <div class="input-group">
+          <input id="planSets" type="number" min="0" placeholder="Подходы" value="0">
+          <input id="planReps" type="number" min="0" placeholder="Повторения" value="0">
+          <input id="planWeight" type="number" min="0" placeholder="Вес (кг)" value="0">
+          <button onclick="addExerciseToPlan()">+</button>
+        </div>
+      </div>
+      <div id="planManualMode" style="display: none;">
+        <div class="exercise-name-container">
+          <input id="manualPlanExerciseName" type="text" placeholder="Название упражнения" class="full-width">
+        </div>
+        <div class="input-group">
+          <input id="manualPlanSets" type="number" min="0" placeholder="Подходы" value="0">
+          <input id="manualPlanReps" type="number" min="0" placeholder="Повторения" value="0">
+          <input id="manualPlanWeight" type="number" min="0" placeholder="Вес (кг)" value="0">
+          <button onclick="addManualExerciseToPlan()">+</button>
+        </div>
+      </div>
+      <ul id="planExerciseList" style="margin-top: 10px;"></ul>
+      <button class="modal-button save" onclick="savePlan()">Сохранить план</button>
+      <button class="modal-button close" onclick="closePlanModal()">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- Модальное окно для списка сохранённых планов -->
+  <div id="plansListModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Сохранённые планы</h3>
+      <ul id="plansList"></ul>
+      <button class="modal-button close" onclick="closePlansListModal()">Закрыть</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="export.js"></script>
+</body>
+</html>

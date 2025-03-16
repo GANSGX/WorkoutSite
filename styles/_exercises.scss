@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2196F3;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  .back-link:hover {
+    text-decoration: underline;
+  }
+  
+  .muscle-groups {
+    margin-top: 20px;
+  }
+  
+  .muscle-group {
+    margin-bottom: 30px;
+  }
+  
+  .muscle-group h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #2196F3;
+    padding-bottom: 5px;
+  }
+  
+  .tier {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .tier.s-tier {
+    background-color: #e8f5e9; /* Светло-зелёный для S-tier */
+  }
+  
+  .tier.a-tier {
+    background-color: #fff3e0; /* Светло-оранжевый для A-tier */
+  }
+  
+  .tier.c-tier {
+    background-color: #ffebee; /* Светло-красный для C-tier */
+  }
+  
+  .tier h3 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .tier ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .tier li {
+    padding: 5px 0;
+    color: #555;
+    font-size: 14px;
+  }

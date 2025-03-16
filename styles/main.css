@@ -1,0 +1,635 @@
+@charset "UTF-8";
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1, h2, h3, h4 {
+  text-align: center;
+  color: #333;
+}
+
+.nav-link {
+  display: block;
+  text-align: center;
+  margin: 0 auto 20px auto;
+  padding: 8px 16px;
+  background-color: #2196F3;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.nav-link:hover {
+  background-color: #1976D2;
+  text-decoration: none;
+}
+
+.user-section {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.user-section input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.user-section button, .exercise-form button, .modal-button {
+  padding: 8px 16px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-section button:hover, .exercise-form button:hover, .modal-button:hover {
+  background-color: #1976D2;
+}
+
+.exercise-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.mode-switch, .plan-mode-switch, .export-mode-switch {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.mode-switch label, .plan-mode-switch label, .export-mode-switch label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px;
+  padding: 6px 12px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.mode-switch label:hover, .plan-mode-switch label:hover, .export-mode-switch label:hover {
+  background-color: #d0d0d0;
+}
+
+.mode-switch input[type=radio], .plan-mode-switch input[type=radio], .export-mode-switch input[type=radio] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #333;
+  background-color: white;
+  margin-right: 6px;
+  cursor: pointer;
+  position: relative;
+}
+
+.mode-switch input[type=radio]:checked, .plan-mode-switch input[type=radio]:checked, .export-mode-switch input[type=radio]:checked {
+  background-color: #2196F3;
+  border-color: #2196F3;
+}
+
+.mode-switch input[type=radio]:checked::after, .plan-mode-switch input[type=radio]:checked::after, .export-mode-switch input[type=radio]:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  transform: translate(-50%, -50%);
+}
+
+.plan-button {
+  padding: 6px 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.plan-button:hover {
+  background-color: #45a049;
+}
+
+#planSelect {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 200px;
+}
+
+#selectMode, #manualMode {
+  display: flex;
+  gap: 10px;
+}
+
+.exercise-form input, .exercise-form select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 150px;
+  transition: border-color 0.3s;
+}
+
+.exercise-form input:focus, .exercise-form select:focus {
+  border-color: #2196F3;
+  outline: none;
+}
+
+.exercise-form select:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+#workoutList {
+  margin-top: 20px;
+}
+
+.workout-group {
+  margin-bottom: 15px;
+}
+
+.workout-group h4 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.workout-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.exercise-name {
+  font-weight: bold;
+  color: #2196F3;
+}
+
+.workout-item button {
+  padding: 5px 10px;
+  margin-left: 5px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.workout-item button:first-of-type {
+  background-color: #4CAF50;
+}
+
+.workout-item button:hover {
+  opacity: 0.9;
+}
+
+/* Стили для модального окна */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+}
+
+#planName, #planMuscleGroup {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#planSelectMode, #planManualMode {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.exercise-name-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.full-width {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#planSelectMode select, #planManualMode input, #planSelectMode input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 120px;
+}
+
+/* Стили для группы ввода с кнопкой справа */
+.input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-group input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Стили для кнопок "+" в #planSelectMode и #planManualMode */
+#planSelectMode button, #planManualMode button {
+  padding: 8px 12px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  height: 38px; /* Согласование высоты с полями ввода */
+}
+
+#planSelectMode button:hover, #planManualMode button:hover {
+  background-color: #1976D2;
+}
+
+#planExerciseList {
+  list-style: none;
+  padding: 0;
+}
+
+#planExerciseList li, #plansList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Стили для кнопок "Ред." и "Удалить" в списке упражнений */
+#planExerciseList li button, #plansList li button {
+  padding: 5px 10px;
+  margin-left: 5px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+#planExerciseList li button:first-of-type, #plansList li button:first-of-type {
+  background-color: #4CAF50;
+}
+
+#planExerciseList li button:first-of-type:hover, #plansList li button:first-of-type:hover {
+  background-color: #45a049;
+}
+
+#planExerciseList li button:last-of-type, #plansList li button:last-of-type {
+  background-color: #f44336;
+}
+
+#planExerciseList li button:last-of-type:hover, #plansList li button:last-of-type:hover {
+  background-color: #d32f2f;
+}
+
+/* Стили для основных кнопок в модальных окнах */
+.modal-content .modal-button {
+  padding: 8px 16px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 14px;
+}
+
+.modal-content .modal-button.save {
+  background-color: #2196F3;
+}
+
+.modal-content .modal-button.save:hover {
+  background-color: #1976D2;
+}
+
+.modal-content .modal-button.delete {
+  background-color: #f44336;
+}
+
+.modal-content .modal-button.delete:hover {
+  background-color: #d32f2f;
+}
+
+.modal-content .modal-button.close {
+  background-color: #757575;
+}
+
+.modal-content .modal-button.close:hover {
+  background-color: #616161;
+}
+
+/* Стили для секции анализа прогресса */
+#progressAnalysis {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#progressAnalysis select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 200px;
+}
+
+#progressAnalysis select:focus {
+  border-color: #2196F3;
+  box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+  outline: none;
+}
+
+#progressAnalysis select:hover {
+  border-color: #2196F3;
+}
+
+#progressAnalysis button {
+  padding: 8px 16px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+#progressAnalysis button:hover {
+  background-color: #1976D2;
+  transform: scale(1.02);
+}
+
+#progressAnalysis button:active {
+  transform: scale(0.98);
+}
+
+#progressResult {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 15px;
+}
+
+.progress-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: left;
+}
+
+#progressResult h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Стили для секции экспорта */
+#exportSection {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+#exportSection h2 {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#exportSection select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 200px;
+}
+
+#exportSection select:focus {
+  border-color: #2196F3;
+  box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+  outline: none;
+}
+
+#exportSection select:hover {
+  border-color: #2196F3;
+}
+
+#exportSection button {
+  padding: 8px 16px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+#exportSection button:hover {
+  background-color: #1976D2;
+  transform: scale(1.02);
+}
+
+#exportSection button:active {
+  transform: scale(0.98);
+}
+
+/* Стили для переключателя режимов экспорта и полей дат */
+#currentPeriodMode, #customPeriodMode {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#customPeriodMode input[type=date] {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 150px;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#customPeriodMode input[type=date]:focus {
+  border-color: #2196F3;
+  box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+  outline: none;
+}
+
+#customPeriodMode input[type=date]:hover {
+  border-color: #2196F3;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.back-link {
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2196F3;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.muscle-groups {
+  margin-top: 20px;
+}
+
+.muscle-group {
+  margin-bottom: 30px;
+}
+
+.muscle-group h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #2196F3;
+  padding-bottom: 5px;
+}
+
+.tier {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.tier.s-tier {
+  background-color: #e8f5e9; /* Светло-зелёный для S-tier */
+}
+
+.tier.a-tier {
+  background-color: #fff3e0; /* Светло-оранжевый для A-tier */
+}
+
+.tier.c-tier {
+  background-color: #ffebee; /* Светло-красный для C-tier */
+}
+
+.tier h3 {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.tier ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.tier li {
+  padding: 5px 0;
+  color: #555;
+  font-size: 14px;
+}/*# sourceMappingURL=main.css.map */
